@@ -1,12 +1,21 @@
 import React from 'react';
+import HeaderBar from './components/HeaderBar';
+import { Provider, observer } from 'mobx-react';
+import UIStateStore from './utils/state/UIStateStore';
+import MenuDrawer from './components/MenuDrawer';
 
 
-export default class App extends React.Component {
+const App = observer(class App extends React.Component {
     render(){
         return(
-            <div>
-                Howdy
-            </div>
+            <Provider uiState = {new UIStateStore()}>
+                <div>
+                    <HeaderBar/>
+                    <MenuDrawer/>
+                </div>
+            </Provider>
         )
     }
-}
+});
+
+export default App;
