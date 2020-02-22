@@ -20,10 +20,6 @@ const HeaderBar = inject("uiState")(observer(class HeaderBar extends React.Compo
                     </IconButton>
 
                     <img height = "50px" src = {logo}/>
-
-                    <Typography variant = "h5">
-                        Baylor Swim Club
-                    </Typography>
                 </Toolbar>
             </AppBar>
         )
