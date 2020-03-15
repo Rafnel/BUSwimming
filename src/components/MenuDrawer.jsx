@@ -1,8 +1,7 @@
 import React from 'react';
 import { SwipeableDrawer, Typography, List, ListItem, ListItemText, Box } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
-
-
+import {Link} from "react-router-dom"
 
 const MenuDrawer = inject("uiState")(observer(class MenuDrawer extends React.Component{
     menuDrawerAction = () => {
@@ -19,8 +18,12 @@ const MenuDrawer = inject("uiState")(observer(class MenuDrawer extends React.Com
                     <Typography variant = "h6">Baylor University Swimming</Typography>
                     <Typography variant = "caption">Version: 0.01</Typography>
                     <List>
-                        <ListItem>
+                        <ListItem button component = {Link} to = "/" onClick = {this.menuDrawerAction}>
                             <ListItemText>Home</ListItemText>
+                        </ListItem>
+                        
+                        <ListItem button component = {Link} to = "/roster" onClick = {this.menuDrawerAction}>
+                            <ListItemText> Manage Roster </ListItemText>
                         </ListItem>
                     </List>
                 </Box>
