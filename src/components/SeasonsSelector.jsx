@@ -48,7 +48,9 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
 
     onSelectChange = async (event) => {
         this.props.rosterState.selectedSeason = event.target.value;
-
+        //update the swimmers list with swimmers from this season.
+        let seasonData = this.props.rosterState.selectedSeason.split(" ");
+        this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
     }
 
     render(){
@@ -76,7 +78,6 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
         //update the swimmers list with swimmers from this season.
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
         this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
-        console.log(JSON.stringify(this.props.rosterState.swimmers));
     }
 }));
 
