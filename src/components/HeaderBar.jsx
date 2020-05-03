@@ -19,7 +19,7 @@ const HeaderBar = inject("uiState")(observer(class HeaderBar extends React.Compo
                         <MenuIcon/>
                     </IconButton>
 
-                    <img height = "50px" src = {logo}/>
+                    <img alt = "BU Logo" height = "50px" src = {logo}/>
                 </Toolbar>
             </AppBar>
         )
