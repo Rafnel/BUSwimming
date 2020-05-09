@@ -1,36 +1,40 @@
 import React from 'react';
-import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, Checkbox, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, Checkbox, FormControl, InputLabel, Select, MenuItem, TextField, Button, IconButton, ThemeProvider, Tooltip } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
-import { setSwimmer } from '../utils/API/swimmersAPI';
-
+import { setSwimmer, removeSwimmer } from '../../utils/API/swimmersAPI';
+import RosterTextField from './RosterTextField';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { redTheme } from '../../utils/theme';
 
 const RosterTable = inject("rosterState")(observer(class RosterTable extends React.Component{
     onDuesPaidChange = (event, swimmer) => {
         swimmer.dues_paid.BOOL = event.target.checked;
-        let seasonData = this.props.rosterState.selectedSeason.split(" ");
-        setSwimmer(swimmer.name.S, swimmer.email.S, swimmer.dues_paid.BOOL, swimmer.shirt_size.S, 
-                   swimmer.received_cap.BOOL, swimmer.received_shirt.BOOL, seasonData[0], seasonData[1]);
+        this.updateSwimmer(swimmer);
     }
 
     onShirtReceivedChange = (event, swimmer) => {
         swimmer.received_shirt.BOOL = event.target.checked;
-        let seasonData = this.props.rosterState.selectedSeason.split(" ");
-        setSwimmer(swimmer.name.S, swimmer.email.S, swimmer.dues_paid.BOOL, swimmer.shirt_size.S, 
-                   swimmer.received_cap.BOOL, swimmer.received_shirt.BOOL, seasonData[0], seasonData[1]);
+        this.updateSwimmer(swimmer);
     }
 
     onCapReceivedChange = (event, swimmer) => {
         swimmer.received_cap.BOOL = event.target.checked;
-        let seasonData = this.props.rosterState.selectedSeason.split(" ");
-        setSwimmer(swimmer.name.S, swimmer.email.S, swimmer.dues_paid.BOOL, swimmer.shirt_size.S, 
-                   swimmer.received_cap.BOOL, swimmer.received_shirt.BOOL, seasonData[0], seasonData[1]);
+        this.updateSwimmer(swimmer);
     }
 
     onShirtSizeChange = (event, swimmer) => {
         swimmer.shirt_size.S = event.target.value;
+        this.updateSwimmer(swimmer);
+    }
+
+    updateSwimmer = (swimmer) => {
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
-        setSwimmer(swimmer.name.S, swimmer.email.S, swimmer.dues_paid.BOOL, swimmer.shirt_size.S, 
+        setSwimmer(swimmer.id.S, swimmer.name.S, swimmer.email.S, swimmer.dues_paid.BOOL, swimmer.shirt_size.S, 
                    swimmer.received_cap.BOOL, swimmer.received_shirt.BOOL, seasonData[0], seasonData[1]);
+    }
+
+    onRemoveSwimmer = (swimmer) => {
+        removeSwimmer(swimmer.id.S, swimmer.name.S);
     }
 
     returnTableRows = () => {
@@ -39,8 +43,12 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
             let swimmer = this.props.rosterState.swimmers[i];
             rows.push(
                 <TableRow key = {i}>
-                    <TableCell>{swimmer.name.S}</TableCell>
-                    <TableCell>{swimmer.email.S}</TableCell>
+                    <TableCell>
+                        {swimmer.name.S}
+                    </TableCell>
+                    <TableCell>
+                        <RosterTextField onSave = {this.updateSwimmer} swimmer = {swimmer} attribute = {"email"}/>
+                    </TableCell>
                     <TableCell>
                         <Checkbox 
                             color = "primary"
@@ -77,6 +85,18 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                             checked = {swimmer.received_shirt.BOOL}
                             onChange = {(event) => this.onShirtReceivedChange(event, swimmer)}
                         />
+                    </TableCell>
+                    <TableCell>
+                        <ThemeProvider theme = {redTheme}>
+                            <Tooltip title = {"Remove " + swimmer.name.S + " from the roster"}>
+                                <IconButton
+                                    color = "primary"
+                                    onClick = {this.onRemoveSwimmer}
+                                >
+                                    <RemoveIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        </ThemeProvider>
                     </TableCell>
                 </TableRow>
             );

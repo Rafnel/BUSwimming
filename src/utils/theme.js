@@ -1,5 +1,5 @@
 import { createMuiTheme } from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
+import { grey, red } from '@material-ui/core/colors';
 
 export const PRIMARY = "#003015";
 export const SECONDARY = "#CCA442";
@@ -15,6 +15,18 @@ export const theme = createMuiTheme({
         },
         info: {
             main: ICONS
+        },
+        red: {
+            main: "#eb4034"
         }
+    }
+});
+
+//red theme for red buttons and things
+export const redTheme = createMuiTheme({ 
+    palette: { 
+        primary: {
+             main: red[600]
+        } 
     }
 });

@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { Grid, Typography } from '@material-ui/core';
-import RosterTable from '../components/RosterTable';
-import SeasonsSelector from '../components/SeasonsSelector';
+import RosterTable from '../components/rosterComponents/RosterTable';
+import SeasonsSelector from '../components/rosterComponents/SeasonsSelector';
 
 const RosterPage = class RosterPage extends React.Component {
     render(){

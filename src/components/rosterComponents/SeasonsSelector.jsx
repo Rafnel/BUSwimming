@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { getSeasons } from '../utils/API/seasonsAPI';
+import { getSeasons } from '../../utils/API/seasonsAPI';
 import { inject, observer } from 'mobx-react';
-import { getSwimmersForSeason } from '../utils/API/swimmersAPI';
+import { getSwimmersForSeason } from '../../utils/API/swimmersAPI';
 
 //function will return the most current season of swimming
 export function returnMostRecentSeason(seasons){
@@ -50,7 +50,12 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
         this.props.rosterState.selectedSeason = event.target.value;
         //update the swimmers list with swimmers from this season.
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
-        this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
+        let swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
+        //if we got undefined back (nothing) set the list to empty array
+        if(swimmers === undefined){
+            swimmers = [];
+        }
+        this.props.rosterState.swimmers = swimmers;
     }
 
     render(){
@@ -78,6 +83,7 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
         //update the swimmers list with swimmers from this season.
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
         this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
+        //console.log(JSON.stringify(this.props.rosterState.swimmers))
     }
 }));
 
