@@ -1,8 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Divider } from '@material-ui/core';
 import RosterTable from '../components/rosterComponents/RosterTable';
 import SeasonsSelector from '../components/rosterComponents/SeasonsSelector';
+import AddSwimmerComponent from '../components/rosterComponents/AddSwimmerComponent';
 
 const RosterPage = class RosterPage extends React.Component {
     render(){
@@ -16,6 +17,14 @@ const RosterPage = class RosterPage extends React.Component {
 
                 <Grid item>
                     <SeasonsSelector/>
+                </Grid>
+
+                <Grid item>
+                    <AddSwimmerComponent/>
+                </Grid>
+
+                <Grid item style = {{width: '100%'}}>
+                    <Divider/>
                 </Grid>
 
                 <Grid item>

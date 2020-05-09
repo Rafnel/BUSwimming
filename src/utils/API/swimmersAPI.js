@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 const axios = require('axios');
 const backendURL = "https://iowvglieh8.execute-api.us-east-1.amazonaws.com/Prod";
 
@@ -10,6 +9,7 @@ export async function getSwimmersForSeason(season_name, season_year){
     return result.data.Items;
 }
 
+//creates or edits swimmer attributes
 export async function setSwimmer(id, name, email, dues_paid, shirt_size, received_cap, received_shirt, season_name, season_year){
     const swimmer = {
         email: email,

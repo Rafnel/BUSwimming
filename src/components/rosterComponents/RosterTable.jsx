@@ -65,6 +65,7 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                                 onChange = {(event) => this.onShirtSizeChange(event, swimmer)}
                                 style = {{width: 130}}
                             >
+                                <MenuItem value = "">None</MenuItem>
                                 <MenuItem value = "Small">Small</MenuItem>
                                 <MenuItem value = "Medium">Medium</MenuItem>
                                 <MenuItem value = "Large">Large</MenuItem>
