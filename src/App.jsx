@@ -5,6 +5,7 @@ import UIStateStore from './utils/state/UIStateStore';
 import MenuDrawer from './components/MenuDrawer';
 import Routes from './pages/Routes';
 import RosterStateStore from './utils/state/RosterStateStore';
+import SuccessMessage from './components/SuccessMessage';
 
 
 const App = observer(class App extends React.Component {
@@ -15,6 +16,7 @@ const App = observer(class App extends React.Component {
                     <HeaderBar/>
                     <Routes/>
                     <MenuDrawer/>
+                    <SuccessMessage/>
                 </div>
             </Provider>
         )

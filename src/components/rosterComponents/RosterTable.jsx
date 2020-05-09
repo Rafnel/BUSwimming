@@ -1,10 +1,11 @@
 import React from 'react';
 import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, Checkbox, FormControl, InputLabel, Select, MenuItem, TextField, Button, IconButton, ThemeProvider, Tooltip } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
-import { setSwimmer, removeSwimmer } from '../../utils/API/swimmersAPI';
+import { setSwimmer, removeSwimmer, getSwimmersForSeason } from '../../utils/API/swimmersAPI';
 import RosterTextField from './RosterTextField';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { redTheme } from '../../utils/theme';
+import AddSwimmerRow from './AddSwimmerRow';
 
 const RosterTable = inject("rosterState")(observer(class RosterTable extends React.Component{
     onDuesPaidChange = (event, swimmer) => {
@@ -33,8 +34,11 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                    swimmer.received_cap.BOOL, swimmer.received_shirt.BOOL, seasonData[0], seasonData[1]);
     }
 
-    onRemoveSwimmer = (swimmer) => {
-        removeSwimmer(swimmer.id.S, swimmer.name.S);
+    onRemoveSwimmer = async (swimmer) => {
+        swimmer.disableRemove = true;
+        await removeSwimmer(swimmer.id.S, swimmer.name.S);
+        let seasonData = this.props.rosterState.selectedSeason.split(" ");
+        this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
     }
 
     returnTableRows = () => {
@@ -65,7 +69,6 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                                 onChange = {(event) => this.onShirtSizeChange(event, swimmer)}
                                 style = {{width: 130}}
                             >
-                                <MenuItem value = "">None</MenuItem>
                                 <MenuItem value = "Small">Small</MenuItem>
                                 <MenuItem value = "Medium">Medium</MenuItem>
                                 <MenuItem value = "Large">Large</MenuItem>
@@ -92,7 +95,8 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                             <Tooltip title = {"Remove " + swimmer.name.S + " from the roster"}>
                                 <IconButton
                                     color = "primary"
-                                    onClick = {this.onRemoveSwimmer}
+                                    disabled = {swimmer.disableRemove}
+                                    onClick = {() => this.onRemoveSwimmer(swimmer)}
                                 >
                                     <RemoveIcon/>
                                 </IconButton>
@@ -121,6 +125,7 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
                     </TableHead>
 
                     <TableBody>
+                        {this.props.rosterState.addingSwimmer && <AddSwimmerRow/>}
                         {this.returnTableRows()}
                     </TableBody>
                 </Table>
