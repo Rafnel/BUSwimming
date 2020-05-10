@@ -1,8 +1,11 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
-import { Button, TableRow, TableCell, TextField, Checkbox, FormControl, InputLabel, Select, MenuItem, Tooltip, IconButton } from '@material-ui/core';
+import { Button, TableRow, TableCell, TextField, Checkbox, FormControl, InputLabel, Select, MenuItem, Tooltip, IconButton, ThemeProvider } from '@material-ui/core';
 import { v4 as uuid } from 'uuid';
 import { setSwimmer, getSwimmersForSeason } from '../../utils/API/swimmersAPI';
+import CloseIcon from '@material-ui/icons/Close';
+import { redTheme } from '../../utils/theme';
+import SaveIcon from '@material-ui/icons/Save';
 
 const AddSwimmerRow = inject("rosterState")(observer(class AddSwimmerRow extends React.Component{
     state = {
@@ -22,6 +25,23 @@ const AddSwimmerRow = inject("rosterState")(observer(class AddSwimmerRow extends
         
         //now that the swimmer is added to db, updated the table
         this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
+        this.props.rosterState.addingSwimmer = false;
+
+        //reset the swimmer to add for next use
+        this.props.rosterState.swimmerToAdd = {
+            name: "",
+            dues_paid: false,
+            received_cap: false,
+            received_shirt: false,
+            shirt_size: "Medium",
+            id: "",
+            email: "",
+            season_name: "",
+            season_year: 0
+        }
+    }
+
+    onCancelClick = () => {
         this.props.rosterState.addingSwimmer = false;
 
         //reset the swimmer to add for next use
@@ -101,8 +121,21 @@ const AddSwimmerRow = inject("rosterState")(observer(class AddSwimmerRow extends
                         disabled = {swimmer.name === "" || this.state.saveClicked}
                         onClick = {() => this.onSaveClick(swimmer)}
                     >
-                        Save New Swimmer
+                        <SaveIcon/> &nbsp; Save
                     </Button>
+                </TableCell>
+
+                <TableCell>
+                    <ThemeProvider theme = {redTheme}>
+                        <Tooltip title = "Cancel">
+                            <IconButton
+                                color = "primary"
+                                onClick = {this.onCancelClick}
+                            >
+                                <CloseIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    </ThemeProvider>
                 </TableCell>
             </TableRow>
         )
