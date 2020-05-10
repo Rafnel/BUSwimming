@@ -3,7 +3,7 @@ import { SwipeableDrawer, Typography, List, ListItem, ListItemText, Box } from '
 import { inject, observer } from 'mobx-react';
 import {Link} from "react-router-dom"
 
-const MenuDrawer = inject("uiState")(observer(class MenuDrawer extends React.Component{
+const MenuDrawer = inject("uiState", "userState")(observer(class MenuDrawer extends React.Component{
     menuDrawerAction = () => {
         this.props.uiState.drawerOpen = !this.props.uiState.drawerOpen;
     }
@@ -21,10 +21,18 @@ const MenuDrawer = inject("uiState")(observer(class MenuDrawer extends React.Com
                         <ListItem button component = {Link} to = "/" onClick = {this.menuDrawerAction}>
                             <ListItemText>Home</ListItemText>
                         </ListItem>
-                        
-                        <ListItem button component = {Link} to = "/roster" onClick = {this.menuDrawerAction}>
-                            <ListItemText> Manage Roster </ListItemText>
-                        </ListItem>
+
+                        {this.props.userState.isAuthenticated && 
+                            <ListItem button component = {Link} to = "/profile" onClick = {this.menuDrawerAction}>
+                                <ListItemText>Profile</ListItemText>
+                            </ListItem>
+                        }
+
+                        {this.props.userState.isAuthenticated && 
+                            <ListItem button component = {Link} to = "/roster" onClick = {this.menuDrawerAction}>
+                                <ListItemText> Manage Roster </ListItemText>
+                            </ListItem>
+                        }
                     </List>
                 </Box>
             </SwipeableDrawer>

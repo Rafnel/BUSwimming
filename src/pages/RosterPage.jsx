@@ -22,6 +22,7 @@ const RosterPage = class RosterPage extends React.Component {
     }
 
     render(){
+        console.log("HIII")
         return(
             <Grid container spacing = {1} direction = "column" justify = "center" alignItems = "center">
                 <Grid item>

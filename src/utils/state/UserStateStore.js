@@ -8,5 +8,6 @@ export default class UserStateStore{
 
 decorate(UserStateStore, {
     user: observable,
-    loading: observable
+    loading: observable,
+    isAuthenticated: observable
 });

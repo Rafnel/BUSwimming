@@ -67,6 +67,7 @@ export const Auth0Provider = inject("userState")(observer(({
   };
 
   const handleRedirectCallback = async () => {
+    console.log("HII")
     setLoading(true);
     await auth0Client.handleRedirectCallback();
     const user = await auth0Client.getUser();
