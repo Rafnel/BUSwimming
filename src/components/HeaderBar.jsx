@@ -1,9 +1,10 @@
 import React from 'react';
-import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Grid } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ICONS } from '../utils/theme';
 import logo from "../images/bearlogo.png";
 import { inject, observer } from 'mobx-react';
+import AccountButton from './account/AccountButton';
 
 
 const HeaderBar = inject("uiState")(observer(class HeaderBar extends React.Component{
@@ -15,11 +16,21 @@ const HeaderBar = inject("uiState")(observer(class HeaderBar extends React.Compo
         return(
             <AppBar position = "sticky">
                 <Toolbar>
-                    <IconButton onClick = {this.onMenuClick} edge = "start" style = {{color: ICONS}}>
-                        <MenuIcon/>
-                    </IconButton>
+                    <Grid justify = "space-between" container alignItems = "center">
+                        <Grid item>
+                            <div style = {{display: "flex"}}>
+                                <IconButton onClick = {this.onMenuClick} edge = "start" style = {{color: ICONS}}>
+                                    <MenuIcon/>
+                                </IconButton>
 
-                    <img alt = "BU Logo" height = "50px" src = {logo}/>
+                                <img style = {{margin: "auto"}} alt = "BU Logo" height = "50px" src = {logo}/>
+                            </div>
+                        </Grid>
+
+                        <Grid item>
+                            <AccountButton/>
+                        </Grid>
+                    </Grid>
                 </Toolbar>
             </AppBar>
         )
