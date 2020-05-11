@@ -8,9 +8,10 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
 
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
-export const Auth0Provider = inject("userState")(observer(({
+export const Auth0Provider = inject("userState", "uiState")(observer(({
   children,
   userState,
+  uiState,
   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
   ...initOptions
 }) => {
@@ -32,6 +33,13 @@ export const Auth0Provider = inject("userState")(observer(({
         onRedirectCallback(appState);
       }
 
+      if(window.location.search.includes("error=")){
+          const urlParams = new URLSearchParams(window.location.search);
+          const errorMessage = urlParams.get("error_description");
+          console.log(errorMessage);
+          uiState.errorMessage = errorMessage;
+      }
+
       const isAuthenticated = await auth0FromHook.isAuthenticated();
 
       setIsAuthenticated(isAuthenticated);
@@ -39,6 +47,7 @@ export const Auth0Provider = inject("userState")(observer(({
 
       if (isAuthenticated) {
         const user = await auth0FromHook.getUser();
+        user.role = user['https://baylorswimclub.auth.com/roles'][0];
         setUser(user);
         userState.user = user;
       }
@@ -77,6 +86,7 @@ export const Auth0Provider = inject("userState")(observer(({
     userState.loading = false;
     userState.isAuthenticated = true;
     userState.user = user;
+    console.log("HI")
   };
   return (
     <Auth0Context.Provider
