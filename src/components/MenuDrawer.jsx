@@ -2,6 +2,7 @@ import React from 'react';
 import { SwipeableDrawer, Typography, List, ListItem, ListItemText, Box } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import {Link} from "react-router-dom"
+import Can from './Can';
 
 const MenuDrawer = inject("uiState", "userState")(observer(class MenuDrawer extends React.Component{
     menuDrawerAction = () => {
@@ -28,10 +29,16 @@ const MenuDrawer = inject("uiState", "userState")(observer(class MenuDrawer exte
                             </ListItem>
                         }
 
-                        {this.props.userState.isAuthenticated && 
-                            <ListItem button component = {Link} to = "/roster" onClick = {this.menuDrawerAction}>
-                                <ListItemText> Manage Roster </ListItemText>
-                            </ListItem>
+                        {this.props.userState.isAuthenticated && !this.props.userState.loading &&
+                            <Can
+                                role = {this.props.userState.user.role}
+                                perform = "manage:roster"
+                                yes = {() => 
+                                    <ListItem button component = {Link} to = "/roster" onClick = {this.menuDrawerAction}>
+                                        <ListItemText> Manage Roster </ListItemText>
+                                    </ListItem>
+                                }
+                            />
                         }
                     </List>
                 </Box>
