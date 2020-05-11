@@ -7,8 +7,17 @@ import BeatLoader from "react-spinners/BeatLoader";
 
 
 const AccountButton = inject("userState")(observer(({userState, props}) => {
-    const {isAuthenticated, loginWithRedirect, logout, loading} = useAuth0();
-    
+    const {loginWithRedirect, logout} = useAuth0();
+    //would only be localhost when developing
+    const url = window.location.href;
+    let returnTo = "";
+    if(url.includes("localhost")){
+        returnTo = "http://localhost:3000"
+    }
+    else{
+        returnTo = "baylorswimclub.com"
+    }
+
     return(
         <div>
             {!userState.isAuthenticated && !userState.loading &&
@@ -22,7 +31,7 @@ const AccountButton = inject("userState")(observer(({userState, props}) => {
 
             {userState.isAuthenticated && !userState.loading &&
                 <Button
-                    onClick = {() => logout()}
+                    onClick = {() => logout({returnTo: returnTo})}
                     style = {{color: ICONS}}
                 >
                     Log Out
