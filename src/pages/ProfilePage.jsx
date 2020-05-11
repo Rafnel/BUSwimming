@@ -1,5 +1,4 @@
 import React from 'react';
-import { Fragment } from 'react';
 import { observer, inject } from 'mobx-react';
 
 const ProfilePage = inject("userState")(observer(class ProfilePage extends React.Component {

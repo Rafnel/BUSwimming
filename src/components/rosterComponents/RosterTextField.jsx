@@ -46,6 +46,7 @@ const RosterTextField = inject("rosterState")(observer(class RosterTextField ext
         return(
             <span>
                 <TextField
+                    style = {{minWidth: 200}}
                     value = {this.props.swimmer[this.props.attribute].S}
                     onChange = {(event) => this.props.swimmer[this.props.attribute].S = event.target.value}
                     onFocus = {this.onFieldFocus}
