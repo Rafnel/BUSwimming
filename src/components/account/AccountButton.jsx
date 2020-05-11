@@ -15,7 +15,7 @@ const AccountButton = inject("userState")(observer(({userState, props}) => {
         returnTo = "http://localhost:3000"
     }
     else{
-        returnTo = "baylorswimclub.com"
+        returnTo = "https://www.baylorswimclub.com"
     }
 
     return(
