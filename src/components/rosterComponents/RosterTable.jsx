@@ -1,13 +1,14 @@
 import React from 'react';
-import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, Checkbox, FormControl, InputLabel, Select, MenuItem, TextField, Button, IconButton, ThemeProvider, Tooltip } from '@material-ui/core';
+import { TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, Checkbox, FormControl, InputLabel, Select, MenuItem, TextField, Button, IconButton, ThemeProvider, Tooltip, Typography, Grid } from '@material-ui/core';
 import { inject, observer } from 'mobx-react';
 import { setSwimmer, removeSwimmer, getSwimmersForSeason } from '../../utils/API/swimmersAPI';
 import RosterTextField from './RosterTextField';
 import RemoveIcon from '@material-ui/icons/Remove';
-import { redTheme } from '../../utils/theme';
+import { redTheme, PRIMARY } from '../../utils/theme';
 import AddSwimmerRow from './AddSwimmerRow';
+import PulseLoader from "react-spinners/PulseLoader";
 
-const RosterTable = inject("rosterState")(observer(class RosterTable extends React.Component{
+const RosterTable = inject("rosterState", "uiState")(observer(class RosterTable extends React.Component{
     onDuesPaidChange = (event, swimmer) => {
         swimmer.dues_paid.BOOL = event.target.checked;
         this.updateSwimmer(swimmer);
@@ -112,6 +113,13 @@ const RosterTable = inject("rosterState")(observer(class RosterTable extends Rea
     render(){
         return(
             <TableContainer component = {Paper}>
+                {this.props.uiState.loading && 
+                    <Grid container alignItems = "center" justify = "center">
+                        <Grid item>
+                            <PulseLoader color = {PRIMARY}/>
+                        </Grid>
+                    </Grid>
+                }
                 <Table>
                     <TableHead>
                         <TableRow>

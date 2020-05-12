@@ -1,8 +1,9 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Typography } from '@material-ui/core';
+import { Typography, Container, Card, CardHeader, CardContent, Chip, Grid } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import { PRIMARY, SECONDARY } from '../utils/theme';
 
 const ProfilePage = inject("userState")(observer(class ProfilePage extends React.Component {
     render(){
@@ -14,26 +15,37 @@ const ProfilePage = inject("userState")(observer(class ProfilePage extends React
             )
         }
         else{
+            let emailStatus;
+            if(user.email_verified){
+                emailStatus = "Verified";
+            }
+            else{
+                emailStatus = "Unverified";
+            }
+
             return(
-                <div style = {{margin: 10}}>
-                    <Typography variant = "h5">
-                        Email: {user.email}
-                    </Typography>
+                <Container maxWidth = "sm" style = {{marginTop: 10}}>
+                    <Card style = {{backgroundColor: "#DCDCDC"}}>
+                        <CardHeader subheader = {user.email} title = "Swimmer Profile"/>
 
-                    <Typography variant = "h5">
-                        Email Verified: &nbsp;
-                        {user.email_verified && 
-                            <CheckIcon color = "primary"/>
-                        }
-                        {!user.email_verified && 
-                            <CloseIcon/>
-                        }
-                    </Typography>
+                        <CardContent>
+                            <Grid container direction = "column" spacing = {1}>
+                                <Grid item>
+                                    <Chip color = "primary" label = {"Email: " + user.email}/>
+                                </Grid>
 
-                    <Typography variant = "h5">
-                        Role: {user.role}
-                    </Typography>
-                </div>
+                                <Grid item>
+                                    <Chip color = "primary" label = {emailStatus}/>
+                                </Grid>
+
+                                <Grid item>
+                                    <Chip color = "primary" label = {"Role: " + user.role}/>
+                                </Grid>
+
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </Container>
             )
         }
     }

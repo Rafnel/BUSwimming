@@ -18,6 +18,9 @@ export const theme = createMuiTheme({
         },
         red: {
             main: "#eb4034"
+        },
+        textPrimary: {
+            
         }
     }
 });

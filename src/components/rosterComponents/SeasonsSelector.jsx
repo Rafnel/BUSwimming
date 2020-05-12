@@ -26,7 +26,7 @@ export function returnMostRecentSeason(seasons){
     return seasonString;
 }
 
-const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector extends React.Component{
+const SeasonsSelector = inject("rosterState", "uiState")(observer(class SeasonsSelector extends React.Component{
     returnSeasons = () => {
         if(this.props.rosterState.seasons === null){
             return <MenuItem value = "">Loading...</MenuItem>
@@ -47,6 +47,7 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
     }
 
     onSelectChange = async (event) => {
+        this.props.uiState.loading = true;
         this.props.rosterState.selectedSeason = event.target.value;
         //update the swimmers list with swimmers from this season.
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
@@ -56,6 +57,7 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
             swimmers = [];
         }
         this.props.rosterState.swimmers = swimmers;
+        this.props.uiState.loading = false;
     }
 
     render(){
@@ -76,6 +78,7 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
     }
 
     async componentDidMount(){
+        this.props.uiState.loading = true;
         //get the seasons from the seasons table
         this.props.rosterState.seasons = await getSeasons();
         //update the state of the selected season with the MOST CURRENT swim season.
@@ -84,6 +87,7 @@ const SeasonsSelector = inject("rosterState")(observer(class SeasonsSelector ext
         let seasonData = this.props.rosterState.selectedSeason.split(" ");
         this.props.rosterState.swimmers = await getSwimmersForSeason(seasonData[0], seasonData[1]);
         //console.log(JSON.stringify(this.props.rosterState.swimmers))
+        this.props.uiState.loading = false;
     }
 }));
 
